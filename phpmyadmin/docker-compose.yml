@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_container
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: sql_db_container
+      PMA_USER: sql_user
+      PMA_PASSWORD: thisismypassword
+    networks:
+      - vlab_network
+
+
+networks:
+  vlab_network:
+    external: true

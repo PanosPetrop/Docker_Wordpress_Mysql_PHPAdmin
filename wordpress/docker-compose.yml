@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_container
+    #restart: always  # we want the container to run even thought the db is down
+    ports:
+      - "8080:80"
+    volumes:
+    - './wordpress:/var/www/html'
+    environment:
+      WORDPRESS_DB_HOST: sql_db_container:3306
+      WORDPRESS_DB_USER: sql_user
+      WORDPRESS_DB_PASSWORD: thisismypassword
+      WORDPRESS_DB_NAME: sql_database
+    networks:
+      - vlab_network
+
+
+
+networks:
+  vlab_network:
+    external: true
