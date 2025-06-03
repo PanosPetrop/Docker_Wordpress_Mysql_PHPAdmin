@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: sql_db_container
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: sql_database
+      MYSQL_USER: sql_user
+      MYSQL_PASSWORD: thisismypassword
+      MYSQL_ROOT_PASSWORD: thisismypassword
+    ports:
+      - "3307:3306"
+    networks:
+      - vlab_network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_container
+    ports:
+      - "8080:80"
+    volumes:
+      - './wordpress:/var/www/html'
+    environment:
+      WORDPRESS_DB_HOST: sql_db_container:3306
+      WORDPRESS_DB_USER: sql_user
+      WORDPRESS_DB_PASSWORD: thisismypassword
+      WORDPRESS_DB_NAME: sql_database
+    depends_on:
+      - mysql
+    networks:
+      - vlab_network
+
+volumes:
+  db_data:
+
+networks:
+  vlab_network:
+    driver: bridge
